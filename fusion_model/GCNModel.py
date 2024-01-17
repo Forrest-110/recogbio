@@ -29,17 +29,17 @@ class RegGNN(nn.Module):
 class GCNModel(torch.nn.Module):
     def __init__(self, fusion_model):
         super(GCNModel, self).__init__()
-        self.backbone = RegGNN(128, 128, 128, 0.5)
+        self.backbone = RegGNN(400, 400, 400, 0.5)
         self.fusion_model = fusion_model
     def forward(self, x_list):
         X0 = x_list[0]
         X1 = x_list[1]
         X2 = x_list[2]
-        feat= torch.ones(X0.shape[0], X0.shape[1], 128).to(X0.device)
+        feat= torch.ones(X0.shape[0], X0.shape[1], 400).to(X0.device)
         X0=self.backbone(feat,X0)
         X1=self.backbone(feat,X1)
         X2=self.backbone(feat,X2)
-
+        # 32x400
         y_pred = self.fusion_model([X0, X1, X2])
         
         return y_pred
